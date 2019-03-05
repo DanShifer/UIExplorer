@@ -85,6 +85,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -100,6 +101,20 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\UI.ico" />
+    <None Include="Resources\UI.png" />
+    <None Include="Resources\UI2.ico" />
+    <None Include="Resources\UI3.ico" />
+    <None Include="Resources\001-negative.png" />
+    <None Include="Resources\003-cancel-1.png" />
+    <None Include="Resources\cogwheel.png" />
+    <None Include="Resources\save.png" />
+    <None Include="Resources\folder.png" />
+    <None Include="Resources\hard.png" />
+    <None Include="Resources\134.png" />
+    <None Include="Resources\cross-out %281%29.png" />
+    <None Include="Resources\cross.png" />
+    <None Include="Resources\close-button.png" />
     <Content Include="UI3.ico" />
   </ItemGroup>
   <ItemGroup>

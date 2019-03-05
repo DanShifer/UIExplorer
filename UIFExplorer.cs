@@ -1,27 +1,219 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
+using UIExplorer.Properties;
 
 namespace UIExplorer
 {
     public partial class UIFExplorer : Form
     {
-        public UIFExplorer()
+        #region Components
+        private DriveInfo[] GetDrives = DriveInfo.GetDrives();
+
+        private GroupBox GroupBox;
+        private PictureBox PictureBox;
+        private ProgressBar ProgressBar;
+        private Label Label;
+        #endregion
+
+        public UIFExplorer() => InitializeComponent();
+
+        private void UIFExplorer_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
+            for (int Drives = GetDrives.Length - 1; Drives > -1; Drives--)
+            {
+                ExplorerPage.Controls.Add(CreateDriveGroupBox(GetDrives[Drives].Name, GetDrives[Drives].TotalSize, GetDrives[Drives].TotalFreeSpace));
+            }
         }
 
-        //private void UIFExplorer_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    base.Capture = false;
-        //    Message m = Message.Create(base.Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
-        //    this.WndProc(ref m);
-        //}
+        #region DriveControl
+        private GroupBox CreateDriveGroupBox(string Name, long AllSize, long FreeSize)
+        {
+            GroupBox = new GroupBox();
+
+            GroupBox.Name = GroupBox.Text = Name;
+            GroupBox.Controls.Add(CreateDriveProgressBar(AllSize, FreeSize));
+            GroupBox.Controls.Add(CreateDriveLabel(AllSize, FreeSize));
+            GroupBox.Controls.Add(CreateDrivePictureBox());
+            GroupBox.Dock = DockStyle.Top;
+
+            GroupBox.DoubleClick += DriveGroupBox_DoubleClick;
+
+            return GroupBox;
+        }
+
+        private PictureBox CreateDrivePictureBox()
+        {
+            PictureBox = new PictureBox();
+
+            PictureBox.Image = Resources.hard;
+            PictureBox.Dock = DockStyle.Left;
+            PictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
+            return PictureBox;
+        }
+
+        private ProgressBar CreateDriveProgressBar(long AllSize, long FreeSize)
+        {
+            ProgressBar = new ProgressBar();
+
+            ProgressBar.Minimum = 0;
+            ProgressBar.Maximum = (int)((double)AllSize).DivisionOnNumber(1024, 3);
+            ProgressBar.Value = (int)(ProgressBar.Maximum - ((double)FreeSize).DivisionOnNumber(1024, 3));
+            ProgressBar.Dock = DockStyle.Bottom;
+
+            return ProgressBar;
+        }
+
+        private Label CreateDriveLabel(double AllSize, double FreeSize)
+        {
+            Label = new Label();
+
+            Label.Text = $"{Math.Round(FreeSize.DivisionOnNumber(1024, 3), 2)} ГБ доступно из {Math.Round(AllSize.DivisionOnNumber(1024, 3), 2)} ГБ";
+            Label.Dock = DockStyle.Bottom;
+
+            return Label;
+        }
+        #endregion
+
+        #region FolderControl
+        private GroupBox CreateFolderGroupBox(string Name, string FullName)
+        {
+            GroupBox = new GroupBox();
+
+            GroupBox.Name = FullName;
+            GroupBox.Text = Name;
+            GroupBox.Height = 25;
+            GroupBox.Dock = DockStyle.Top;
+
+            GroupBox.Click += FolderGroupBox_Click;
+            GroupBox.DoubleClick += FolderGroupBox_DoubleClick;
+
+            return GroupBox;
+        }
+        #endregion
+
+        #region Event
+        private void DriveGroupBox_DoubleClick(object sender, EventArgs e)
+        {
+            if (ExplorerControl.TabPages[((GroupBox)sender).Name] != null)
+            {
+                ExplorerControl.SelectTab(((GroupBox)sender).Name);
+            }
+            else
+            {
+                ExplorerControl.TabPages.Add(((GroupBox)sender).Name, ((GroupBox)sender).Name);
+                ExplorerControl.TabPages[((GroupBox)sender).Name].BackColor = Color.White;
+                ExplorerControl.TabPages[((GroupBox)sender).Name].AutoScroll = true;
+
+                foreach (var GetFile in new DirectoryInfo(((GroupBox)sender).Name).GetFiles())
+                {
+                    ExplorerControl.TabPages[((GroupBox)sender).Name].Controls.Add(CreateFolderGroupBox(GetFile.Name, GetFile.FullName));
+                }
+
+                foreach (var GetDirectory in new DirectoryInfo(((GroupBox)sender).Name).GetDirectories())
+                {
+                    ExplorerControl.TabPages[((GroupBox)sender).Name].Controls.Add(CreateFolderGroupBox(GetDirectory.Name, GetDirectory.FullName));
+                }
+
+                ExplorerControl.SelectTab(((GroupBox)sender).Name);
+            }
+        }
+
+        private void FolderGroupBox_Click(object sender, EventArgs e)
+        {
+            DirectoryInfo GetInfo = new DirectoryInfo(((GroupBox)sender).Name);
+
+            PathLabel.Text = "Расположение:" + GetInfo.FullName;
+
+            SizeLabel.Text = (GetInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory ? "Размер: Неизвестно" : "Размер:" + Math.Round(((double)new FileInfo(((GroupBox)sender).Name).Length).DivisionOnNumber(1024, 2), 2) + " МБ";
+
+            CreatedLabel.Text = "Создан:" + GetInfo.CreationTime.ToString();
+            ChangedLabel.Text = "Изменен:" + GetInfo.LastWriteTime.ToString();
+            OpenLabel.Text = "Открыт:" + GetInfo.LastAccessTime.ToString();
+        }
+
+        private void FolderGroupBox_DoubleClick(object sender, EventArgs e)
+        {
+            DirectoryInfo GetInfo = new DirectoryInfo(((GroupBox)sender).Name);
+
+            if (ExplorerControl.TabPages[((GroupBox)sender).Name] != null)
+            {
+                ExplorerControl.SelectTab(((GroupBox)sender).Name);
+            }
+            else
+            {
+                if ((GetInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory)
+                {
+                    try
+                    {
+                        ExplorerControl.TabPages.Add(((GroupBox)sender).Name, ((GroupBox)sender).Name);
+                        ExplorerControl.TabPages[((GroupBox)sender).Name].BackColor = Color.White;
+                        ExplorerControl.TabPages[((GroupBox)sender).Name].AutoScroll = true;
+
+                        foreach (var GetFile in GetInfo.GetFiles())
+                        {
+                            ExplorerControl.TabPages[((GroupBox)sender).Name].Controls.Add(CreateFolderGroupBox(GetFile.Name, GetFile.FullName));
+                        }
+
+                        foreach (var GetDirectory in GetInfo.GetDirectories())
+                        {
+                            ExplorerControl.TabPages[((GroupBox)sender).Name].Controls.Add(CreateFolderGroupBox(GetDirectory.Name, GetDirectory.FullName));
+                        }
+
+                        ExplorerControl.SelectTab(((GroupBox)sender).Name);
+                    }
+                    catch (Exception EX)
+                    {
+                        MessageBox.Show(EX.Message, "UIExplorer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ExplorerControl.TabPages.Remove(ExplorerControl.TabPages[((GroupBox)sender).Name]);
+                    }
+                }
+                else
+                {
+                    Process.Start(((GroupBox)sender).Name);
+                }
+            }
+        }
+        #endregion
+
+        #region Menu
+        private void UIFExplorer_MouseDown(object sender, MouseEventArgs e)
+        {
+            base.Capture = false;
+
+            Message m = Message.Create(this.Handle, 0xA1, new IntPtr(2), IntPtr.Zero);
+            this.WndProc(ref m);
+        }
+
+        private void CollapsePictureBox_Click(object sender, EventArgs e) => this.WindowState = FormWindowState.Minimized;
+
+        private void CollapsePictureBox_MouseEnter(object sender, EventArgs e) => CollapsePictureBox.BackColor = Color.Silver;
+
+        private void CollapsePictureBox_MouseLeave(object sender, EventArgs e) => CollapsePictureBox.BackColor = Color.White;
+
+        private void ExitPictureBox_Click(object sender, EventArgs e) => Environment.Exit(0);
+
+        private void ExitPictureBox_MouseEnter(object sender, EventArgs e) => ExitPictureBox.BackColor = Color.Red;
+
+        private void ExitPictureBox_MouseLeave(object sender, EventArgs e) => ExitPictureBox.BackColor = Color.White;
+        #endregion
+    }
+
+    public static class Helper
+    {
+        public static double DivisionOnNumber(this double N1, double N2, int Repetitions)
+        {
+            double Number = N1;
+
+            for (int Num = 1; Num <= Repetitions; Num++)
+            {
+                Number /= N2;
+            }
+
+            return Number;
+        }
     }
 }
