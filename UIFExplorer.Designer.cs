@@ -35,8 +35,8 @@
             this.ChangedLabel = new System.Windows.Forms.Label();
             this.CreatedLabel = new System.Windows.Forms.Label();
             this.SizeLabel = new System.Windows.Forms.Label();
-            this.PathLabel = new System.Windows.Forms.Label();
             this.LogoLabel = new System.Windows.Forms.Label();
+            this.PathLabel = new System.Windows.Forms.Label();
             this.ExplorerControl = new System.Windows.Forms.TabControl();
             this.ExplorerPage = new System.Windows.Forms.TabPage();
             this.ExitPictureBox = new System.Windows.Forms.PictureBox();
@@ -81,7 +81,7 @@
             this.OpenLabel.ForeColor = System.Drawing.Color.White;
             this.OpenLabel.Location = new System.Drawing.Point(6, 82);
             this.OpenLabel.Name = "OpenLabel";
-            this.OpenLabel.Size = new System.Drawing.Size(51, 13);
+            this.OpenLabel.Size = new System.Drawing.Size(64, 17);
             this.OpenLabel.TabIndex = 4;
             this.OpenLabel.Text = "Открыт:";
             // 
@@ -91,7 +91,7 @@
             this.ChangedLabel.ForeColor = System.Drawing.Color.White;
             this.ChangedLabel.Location = new System.Drawing.Point(6, 60);
             this.ChangedLabel.Name = "ChangedLabel";
-            this.ChangedLabel.Size = new System.Drawing.Size(53, 13);
+            this.ChangedLabel.Size = new System.Drawing.Size(67, 17);
             this.ChangedLabel.TabIndex = 3;
             this.ChangedLabel.Text = "Изменен:";
             // 
@@ -101,7 +101,7 @@
             this.CreatedLabel.ForeColor = System.Drawing.Color.White;
             this.CreatedLabel.Location = new System.Drawing.Point(6, 38);
             this.CreatedLabel.Name = "CreatedLabel";
-            this.CreatedLabel.Size = new System.Drawing.Size(48, 13);
+            this.CreatedLabel.Size = new System.Drawing.Size(59, 17);
             this.CreatedLabel.TabIndex = 2;
             this.CreatedLabel.Text = "Создан:";
             // 
@@ -111,22 +111,9 @@
             this.SizeLabel.ForeColor = System.Drawing.Color.White;
             this.SizeLabel.Location = new System.Drawing.Point(6, 16);
             this.SizeLabel.Name = "SizeLabel";
-            this.SizeLabel.Size = new System.Drawing.Size(46, 13);
+            this.SizeLabel.Size = new System.Drawing.Size(58, 17);
             this.SizeLabel.TabIndex = 1;
             this.SizeLabel.Text = "Размер:";
-            // 
-            // PathLabel
-            // 
-            this.PathLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PathLabel.AutoSize = true;
-            this.PathLabel.ForeColor = System.Drawing.Color.Black;
-            this.PathLabel.Location = new System.Drawing.Point(181, 7);
-            this.PathLabel.Name = "PathLabel";
-            this.PathLabel.Size = new System.Drawing.Size(84, 13);
-            this.PathLabel.TabIndex = 0;
-            this.PathLabel.Text = "Расположение:";
             // 
             // LogoLabel
             // 
@@ -140,6 +127,19 @@
             this.LogoLabel.TabIndex = 0;
             this.LogoLabel.Text = "UI";
             this.LogoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // PathLabel
+            // 
+            this.PathLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PathLabel.AutoSize = true;
+            this.PathLabel.ForeColor = System.Drawing.Color.Black;
+            this.PathLabel.Location = new System.Drawing.Point(181, 7);
+            this.PathLabel.Name = "PathLabel";
+            this.PathLabel.Size = new System.Drawing.Size(107, 17);
+            this.PathLabel.TabIndex = 0;
+            this.PathLabel.Text = "Расположение:";
             // 
             // ExplorerControl
             // 
@@ -155,9 +155,9 @@
             // 
             this.ExplorerPage.AutoScroll = true;
             this.ExplorerPage.BackColor = System.Drawing.Color.White;
-            this.ExplorerPage.Location = new System.Drawing.Point(4, 21);
+            this.ExplorerPage.Location = new System.Drawing.Point(4, 25);
             this.ExplorerPage.Name = "ExplorerPage";
-            this.ExplorerPage.Size = new System.Drawing.Size(911, 519);
+            this.ExplorerPage.Size = new System.Drawing.Size(911, 515);
             this.ExplorerPage.TabIndex = 0;
             this.ExplorerPage.Text = "Проводник";
             // 
@@ -193,7 +193,7 @@
             // 
             // UIFExplorer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1094, 570);
