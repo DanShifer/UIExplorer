@@ -32,10 +32,12 @@ namespace UIExplorer
             Components.GroupBox.Controls.Add(CreateDriveLabel(AllSize, FreeSize));
             Components.GroupBox.Controls.Add(CreateDrivePictureBox());
 
+            Components.GroupBox.MouseEnter += GroupBox_MouseEnter;
+            Components.GroupBox.MouseLeave += GroupBox_MouseLeave;
             Components.GroupBox.DoubleClick += DriveGroupBox_DoubleClick;
-
+        
             return Components.GroupBox;
-        }
+        }       
 
         private PictureBox CreateDrivePictureBox()
         {
@@ -87,6 +89,8 @@ namespace UIExplorer
                 Dock = DockStyle.Top
             };
 
+            Components.GroupBox.MouseEnter += GroupBox_MouseEnter;
+            Components.GroupBox.MouseLeave += GroupBox_MouseLeave;
             Components.GroupBox.Click += FolderGroupBox_Click;
             Components.GroupBox.DoubleClick += FolderGroupBox_DoubleClick;
 
@@ -104,6 +108,7 @@ namespace UIExplorer
                 ScrollBars = ScrollBars.Vertical | ScrollBars.Horizontal,
                 ContextMenuStrip = CreateTextMenu(FullName)
             };
+
             Components.TextBox.TextChanged += TextBox_TextChanged;
         
             using (StreamReader Reader = new StreamReader(FullName))
@@ -172,10 +177,14 @@ namespace UIExplorer
             Components.CreateMenuStripItem.Click += CreateFileMenuStripItem_Click;
 
             return Components.CreateMenuStripItem;
-        }       
+        }
         #endregion
 
         #region Event
+        private void GroupBox_MouseEnter(object sender, EventArgs e) => ((GroupBox)sender).BackColor = Color.FromArgb(204, 232, 255);
+
+        private void GroupBox_MouseLeave(object sender, EventArgs e) => ((GroupBox)sender).BackColor = Color.White;
+
         private void DriveGroupBox_DoubleClick(object sender, EventArgs e)
         {
             if (ExplorerControl.TabPages[((GroupBox)sender).Name] != null)
@@ -353,6 +362,8 @@ namespace UIExplorer
         private void ExitPictureBox_MouseEnter(object sender, EventArgs e) => ExitPictureBox.BackColor = Color.Red;
 
         private void ExitPictureBox_MouseLeave(object sender, EventArgs e) => ExitPictureBox.BackColor = Color.White;
+
+        private void CloseToolStripMenuItem_Click(object sender, EventArgs e) => ExplorerControl.TabPages.Remove(ExplorerControl.TabPages[ExplorerControl.SelectedIndex]);
         #endregion
     }
 }

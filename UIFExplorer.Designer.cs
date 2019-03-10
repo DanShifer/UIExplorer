@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UIFExplorer));
             this.MenuPanel = new System.Windows.Forms.Panel();
             this.PropertiesBox = new System.Windows.Forms.GroupBox();
@@ -38,12 +39,15 @@
             this.LogoLabel = new System.Windows.Forms.Label();
             this.PathLabel = new System.Windows.Forms.Label();
             this.ExplorerControl = new System.Windows.Forms.TabControl();
+            this.TabMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.CloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExplorerPage = new System.Windows.Forms.TabPage();
             this.ExitPictureBox = new System.Windows.Forms.PictureBox();
             this.CollapsePictureBox = new System.Windows.Forms.PictureBox();
             this.MenuPanel.SuspendLayout();
             this.PropertiesBox.SuspendLayout();
             this.ExplorerControl.SuspendLayout();
+            this.TabMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ExitPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CollapsePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -143,6 +147,7 @@
             // 
             // ExplorerControl
             // 
+            this.ExplorerControl.ContextMenuStrip = this.TabMenuStrip;
             this.ExplorerControl.Controls.Add(this.ExplorerPage);
             this.ExplorerControl.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ExplorerControl.Location = new System.Drawing.Point(175, 26);
@@ -150,6 +155,22 @@
             this.ExplorerControl.SelectedIndex = 0;
             this.ExplorerControl.Size = new System.Drawing.Size(919, 544);
             this.ExplorerControl.TabIndex = 2;
+            // 
+            // TabMenuStrip
+            // 
+            this.TabMenuStrip.BackColor = System.Drawing.Color.White;
+            this.TabMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.TabMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CloseToolStripMenuItem});
+            this.TabMenuStrip.Name = "TabMenuStrip";
+            this.TabMenuStrip.Size = new System.Drawing.Size(211, 56);
+            // 
+            // CloseToolStripMenuItem
+            // 
+            this.CloseToolStripMenuItem.Name = "CloseToolStripMenuItem";
+            this.CloseToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.CloseToolStripMenuItem.Text = "Закрыть";
+            this.CloseToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
             // ExplorerPage
             // 
@@ -216,6 +237,7 @@
             this.PropertiesBox.ResumeLayout(false);
             this.PropertiesBox.PerformLayout();
             this.ExplorerControl.ResumeLayout(false);
+            this.TabMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ExitPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CollapsePictureBox)).EndInit();
             this.ResumeLayout(false);
@@ -237,6 +259,8 @@
         private System.Windows.Forms.Label SizeLabel;
         private System.Windows.Forms.PictureBox ExitPictureBox;
         private System.Windows.Forms.PictureBox CollapsePictureBox;
+        private System.Windows.Forms.ContextMenuStrip TabMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem CloseToolStripMenuItem;
     }
 }
 
