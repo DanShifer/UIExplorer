@@ -12,7 +12,7 @@ namespace UIExplorer
     {
         public UIFExplorer() => InitializeComponent();
 
-        private void UIFExplorer_Load(object sender, EventArgs e)
+         private void UIFExplorer_Load(object sender, EventArgs e)
         {
             for (int Drives = Components.GetDrives.Length - 1; Drives > -1; Drives--)
             {
@@ -363,7 +363,13 @@ namespace UIExplorer
 
         private void ExitPictureBox_MouseLeave(object sender, EventArgs e) => ExitPictureBox.BackColor = Color.White;
 
-        private void CloseToolStripMenuItem_Click(object sender, EventArgs e) => ExplorerControl.TabPages.Remove(ExplorerControl.TabPages[ExplorerControl.SelectedIndex]);
+        private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ExplorerControl.SelectedIndex != 0)
+            {
+                ExplorerControl.TabPages.Remove(ExplorerControl.TabPages[ExplorerControl.SelectedIndex]);
+            }
+        }
         #endregion
     }
 }
